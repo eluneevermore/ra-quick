@@ -1,0 +1,30 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.0.2
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/base:stable
+      - image: redis:6
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Install pnpm package manager
+          command: |
+            corepack enable
+            corepack prepare pnpm@latest-8 --activate
+      - node/install:
+          install-yarn: true
+          node-version: "16.15"
+      - run:
+          command: pnpm install
+      - run:
+          command: pnpm run test --runInBand --ci
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
