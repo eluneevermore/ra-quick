@@ -1,6 +1,6 @@
 {
   "name": "ra-quick",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quickly generate React Admin resources from Json",
   "main": "dist/index.js",
   "files": [
