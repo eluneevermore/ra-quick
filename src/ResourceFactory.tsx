@@ -1,16 +1,18 @@
 import { ReactElement } from 'react'
-import FieldFactory, { FieldMode, FieldProperty } from './FieldFactory'
 import {
-  Resource,
   Create,
   Datagrid, Edit,
-  EditButton, List, Show,
+  EditButton, List,
+  Resource,
+  ResourceProps,
+  Show,
   ShowButton,
   SimpleForm,
   SimpleShowLayout,
-  ResourceProps,
 } from 'react-admin'
+import ActionFactory, { ActionsGeneratingProp, ActionType } from './ActionFactory'
 import ListActions from './components/list/ExtListActions'
+import FieldFactory, { FieldMode, FieldProperty } from './FieldFactory'
 
 type View = 'list' | 'show' | 'create' | 'edit'
 
@@ -32,12 +34,12 @@ export type ResourceGenerateOption = {
   fields?: Record<string, FieldProperty>,
   filters?: Record<string, FieldProperty>,
   inputs?: Record<string, FieldProperty>,
-  listActions?: Array<ReactElement<any>> | ReactElement<any>,
+  listActions?: ActionsGeneratingProp,
   listFields?: Record<string, FieldProperty>,
   listOptions?: Record<string, any>,
   only?: View[],
   props?: Partial<ResourceProps>,
-  recordActions?: Array<ReactElement<any>> | ReactElement<any>,
+  recordActions?: ActionsGeneratingProp,
   showFields?: Record<string, FieldProperty>,
   showOptions?: Record<string, any>,
 }
@@ -45,9 +47,11 @@ export type ResourceGenerateOption = {
 class ResourceFactory {
 
   fieldFactory: FieldFactory
+  actionFactory: ActionFactory
 
-  constructor(fieldFactory?: FieldFactory) {
+  constructor(fieldFactory?: FieldFactory, actionFactory?: ActionFactory) {
     this.fieldFactory = fieldFactory ?? new FieldFactory()
+    this.actionFactory = actionFactory ?? new ActionFactory()
   }
 
   generateResource = (
@@ -117,13 +121,13 @@ class ResourceFactory {
     if (hasList) {
       result.list = () =>
         <List
-          actions={<ListActions actions={listActions} />}
+          actions={<ListActions actions={this.actionFactory.generateActions(ActionType.LIST, name, listActions)} />}
           filters={this.renderFilterInputs(filters)}
           {...{ hasCreate, hasEdit, ...listOptions }}
         >
           <Datagrid {...datagridOptions}>
             {this.renderListFields({ ...fields, ...listFields, ...actions })}
-            {recordActions}
+            {this.actionFactory.generateActions(ActionType.RECORD, name, recordActions)}
           </Datagrid>
         </List>
     }

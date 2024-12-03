@@ -12,7 +12,29 @@ const RESOURCES: ResourceGenerateOption[] = [{
     id: 'Serial!',
     name: 'Text',
     email: 'Text',
-  }
+  },
+  listActions: [{
+    name: 'ban',
+    form: {
+      reason: 'Text!',
+      forever: 'Bool',
+      until: 'DateTime!',
+    },
+  }],
+  recordActions: [{
+    name: 'greeting',
+  }, {
+    name: 'email',
+    form: {
+      title: 'Text!',
+      repeat: 'Number!',
+      attachment: 'File!',
+      type: {
+        componentType: 'Enum',
+        options: ['promotion', 'notification'],
+      },
+    }
+  }]
 }, {
   name: 'posts',
   fields: {

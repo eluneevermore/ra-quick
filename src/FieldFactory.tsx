@@ -16,6 +16,7 @@ import JsonField from './components/fields/JsonField'
 import JsonInput from './components/inputs/JsonInput'
 import { Awaitable } from './utils'
 import React from 'react'
+import { Required } from './common'
 
 type FieldProps = { source: string } & Record<string, any>
 
@@ -41,8 +42,6 @@ export const BasicField = {
   Reference: 'Reference',
   ReferenceArray: 'ReferenceArray',
 }
-
-export const Required = '!'
 
 class FieldFactory {
 
