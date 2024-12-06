@@ -15,5 +15,3 @@ export interface ActionProvider {
   triggerListAction<T = any>(params: ListActionParams<T>): any
   triggerRecordAction<T = any>(params: RecordActionParams<T>): any
 }
-
-export default ActionProvider

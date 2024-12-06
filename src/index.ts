@@ -1,5 +1,4 @@
 import ActionFactory from './ActionFactory'
-import ActionProvider from './ActionProvider'
 import FieldFactory from './FieldFactory'
 import FormFactory from './FormFactory'
 import ResourceFactory from './ResourceFactory'
@@ -12,7 +11,7 @@ export * from './ResourceFactory'
 const { BasicField, Required } = FieldFactory
 
 export {
-  ActionFactory, ActionProvider, BasicField, FieldFactory, FormFactory, Required, ResourceFactory
+  ActionFactory, BasicField, FieldFactory, FormFactory, Required, ResourceFactory
 }
 
 const factory = new ResourceFactory()

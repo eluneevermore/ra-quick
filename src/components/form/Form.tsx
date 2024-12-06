@@ -1,11 +1,12 @@
 import { Box, Button, DialogActions, DialogContent } from '@mui/material'
-import { ReactElement, useMemo } from 'react'
+import { ReactElement, useCallback, useMemo } from 'react'
+import { useRecordContext } from 'react-admin'
 import { FormProvider, UseFormReturn, useForm, useFormContext } from 'react-hook-form'
 
 export type FormDialogProps = {
   open?: boolean
   title?: string
-  onSubmit: (any) => any
+  onSubmit: (...any) => any
   children?: React.ReactNode
   render?: (form: UseFormReturn) => ReactElement
 }
@@ -16,12 +17,14 @@ export const FormContainer = ({
   render,
 }: FormDialogProps) => {
   const formProps = useForm()
+  const record = useRecordContext()
   const { handleSubmit } = formProps
   const content = useMemo(() => children ?? (render && render(formProps)), [children, render, formProps])
+  const submitHandler = useCallback(values => onSubmit(values, record?.id), [onSubmit])
 
   return (
     <FormProvider {...formProps}>
-      <Box component='form' onSubmit={handleSubmit(onSubmit)}>
+      <Box component='form' onSubmit={handleSubmit(submitHandler)}>
         <DialogContent>
           {content}
         </DialogContent>

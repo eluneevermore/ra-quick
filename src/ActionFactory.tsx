@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import ActionProvider, { ListActionParams, RecordActionParams } from './ActionProvider'
+import { ActionProvider, ListActionParams, RecordActionParams } from './ActionProvider'
 import { titleize } from './common'
 import { FormActionButton } from './components/buttons/ActionBotton'
 import { BasicField } from './FieldFactory'
