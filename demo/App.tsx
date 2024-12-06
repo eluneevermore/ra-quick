@@ -1,8 +1,8 @@
-import React from 'react'
 import jsonServerProvider from 'ra-data-json-server'
+import React from 'react'
 import { Admin } from 'react-admin'
-import { authProvider } from './authProvider'
 import factory, { ResourceGenerateOption } from '../src'
+import { authProvider } from './authProvider'
 
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com')
 

@@ -1,19 +1,20 @@
-import ResourceFactory from './ResourceFactory'
+import ActionFactory from './ActionFactory'
+import ActionProvider from './ActionProvider'
 import FieldFactory from './FieldFactory'
-import type { FieldProperty, FieldMode } from './FieldFactory'
-import type { ResourceGenerateOption, ResourceGeneratedProps } from './ResourceFactory'
+import FormFactory from './FormFactory'
+import ResourceFactory from './ResourceFactory'
+export * from './ActionFactory'
+export * from './ActionProvider'
+export * from './FieldFactory'
+export * from './FormFactory'
+export * from './ResourceFactory'
 
 const { BasicField, Required } = FieldFactory
 
 export {
-  FieldProperty,
-  FieldMode,
-  ResourceGenerateOption,
-  ResourceGeneratedProps,
-  ResourceFactory,
-  FieldFactory,
-  BasicField,
-  Required,
+  ActionFactory, ActionProvider, BasicField, FieldFactory, FormFactory, Required, ResourceFactory
 }
 
-export default new ResourceFactory()
+const factory = new ResourceFactory()
+
+export default factory

@@ -28,7 +28,7 @@ export type FormFieldHandler = (props: FormFieldHandlerProps) => ReactElement<{ 
 
 type Library = Record<string, FormFieldHandler>
 
-const BasicField = {
+export const FormBasicField = {
   Text: 'Text',
   Number: 'Number',
   Bool: 'Bool',
@@ -44,19 +44,19 @@ class FormFactory {
 
   constructor() {
     this.library = {
-      [BasicField.Text]: (props) => <WithForm key={props.key} render={form =>
+      [FormBasicField.Text]: (props) => <WithForm key={props.key} render={form =>
         <TextField
           {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
           {...FormFactory.getCommonFieldProps(props, form)}
         />
       } />,
-      [BasicField.Number]: (props) => <WithForm key={props.key} render={form =>
+      [FormBasicField.Number]: (props) => <WithForm key={props.key} render={form =>
         <TextField type='number'
           {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
           {...FormFactory.getCommonFieldProps(props, form)}
         />}
       />,
-      [BasicField.Bool]: (props) => <WithForm key={props.key} render={form => {
+      [FormBasicField.Bool]: (props) => <WithForm key={props.key} render={form => {
         const { label, helperText, fullWidth, ...commonProps } = FormFactory.getCommonFieldProps(props, form)
         return (
           <FormControl error={!!helperText}>
@@ -75,7 +75,7 @@ class FormFactory {
           </FormControl>
         )
       }} />,
-      [BasicField.DateTime]: (props) => <WithForm key={props.key} render={form => {
+      [FormBasicField.DateTime]: (props) => <WithForm key={props.key} render={form => {
         const { label, helperText, fullWidth, ...commonProps } = FormFactory.getCommonFieldProps(props, form)
         return (
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -92,7 +92,7 @@ class FormFactory {
           </LocalizationProvider>
         )
       }} />,
-      [BasicField.Enum]: (props) => <WithForm key={props.key} render={form => {
+      [FormBasicField.Enum]: (props) => <WithForm key={props.key} render={form => {
         return (
           <TextField
             {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
@@ -107,8 +107,8 @@ class FormFactory {
           </TextField>
         )
       }} />,
-      [BasicField.Color]: (props) => <ColorFormInput {...props} />,
-      [BasicField.File]: (props) => <WithForm key={props.key} render={form =>
+      [FormBasicField.Color]: (props) => <ColorFormInput {...props} />,
+      [FormBasicField.File]: (props) => <WithForm key={props.key} render={form =>
         <FileFormInput
           {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
           {...FormFactory.getCommonFieldProps(props, form)}

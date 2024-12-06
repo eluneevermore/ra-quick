@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import ActionProvider from './ActionProvider'
+import ActionProvider, { ListActionParams, RecordActionParams } from './ActionProvider'
 import { titleize } from './common'
 import { FormActionButton } from './components/buttons/ActionBotton'
 import { BasicField } from './FieldFactory'
@@ -22,13 +22,23 @@ export enum ActionType {
   RECORD = 'record',
 }
 
+const logActionProvider: ActionProvider = {
+  triggerListAction<T = any>(params: ListActionParams<T>): any {
+    console.log(params)
+  },
+
+  triggerRecordAction<T = any>(params: RecordActionParams<T>): any {
+    console.log(params)
+  },
+}
+
 class ActionFactory {
 
   actionProvider: ActionProvider
   formFactory: FormFactory
 
   constructor(actionProvider?: ActionProvider, formFactory?: FormFactory) {
-    this.actionProvider = actionProvider ?? new ActionProvider()
+    this.actionProvider = actionProvider ?? logActionProvider
     this.formFactory = formFactory ?? new FormFactory()
   }
 

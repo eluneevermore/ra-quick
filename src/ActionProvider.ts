@@ -11,15 +11,9 @@ export type RecordActionParams<T = any, K = any> = {
   values: T
 }
 
-export class ActionProvider {
-
-  triggerListAction<T = any>(params: ListActionParams<T>): any {
-    console.log(params)
-  }
-
-  triggerRecordAction<T = any>(params: RecordActionParams<T>): any {
-    console.log(params)
-  }
+export interface ActionProvider {
+  triggerListAction<T = any>(params: ListActionParams<T>): any
+  triggerRecordAction<T = any>(params: RecordActionParams<T>): any
 }
 
 export default ActionProvider
