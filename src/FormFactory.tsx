@@ -44,76 +44,88 @@ class FormFactory {
 
   constructor() {
     this.library = {
-      [FormBasicField.Text]: (props) => <WithForm key={props.key} render={form =>
-        <TextField
-          {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
-          {...FormFactory.getCommonFieldProps(props, form)}
+      [FormBasicField.Text]: (props) => (
+        <WithForm key={props.key} render={form =>
+          <TextField
+            {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+            {...FormFactory.getCommonFieldProps(props, form)}
+          />
+        } />
+      ),
+      [FormBasicField.Number]: (props) => (
+        <WithForm key={props.key} render={form =>
+          <TextField type='number'
+            {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+            {...FormFactory.getCommonFieldProps(props, form)}
+          />}
         />
-      } />,
-      [FormBasicField.Number]: (props) => <WithForm key={props.key} render={form =>
-        <TextField type='number'
-          {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
-          {...FormFactory.getCommonFieldProps(props, form)}
-        />}
-      />,
-      [FormBasicField.Bool]: (props) => <WithForm key={props.key} render={form => {
-        const { label, helperText, fullWidth, ...commonProps } = FormFactory.getCommonFieldProps(props, form)
-        return (
-          <FormControl error={!!helperText}>
-            <FormControlLabel
-              label={label}
-              control={
-                <Checkbox
-                  {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
-                  {...commonProps}
-                />
-              }
-            />
-            {!!helperText && (
-              <FormHelperText>{helperText}</FormHelperText>
-            )}
-          </FormControl>
-        )
-      }} />,
-      [FormBasicField.DateTime]: (props) => <WithForm key={props.key} render={form => {
-        const { label, helperText, fullWidth, ...commonProps } = FormFactory.getCommonFieldProps(props, form)
-        return (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <FormControl fullWidth error={!!helperText}>
-              <DateTimePicker
+      ),
+      [FormBasicField.Bool]: (props) => (
+        <WithForm key={props.key} render={form => {
+          const { label, helperText, fullWidth, ...commonProps } = FormFactory.getCommonFieldProps(props, form)
+          return (
+            <FormControl error={!!helperText}>
+              <FormControlLabel
                 label={label}
-                {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
-                onChange={(date) => form.setValue(props.name, date)}  // Manually set the value for the DateTime
+                control={
+                  <Checkbox
+                    {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+                    {...commonProps}
+                  />
+                }
               />
               {!!helperText && (
                 <FormHelperText>{helperText}</FormHelperText>
               )}
             </FormControl>
-          </LocalizationProvider>
-        )
-      }} />,
-      [FormBasicField.Enum]: (props) => <WithForm key={props.key} render={form => {
-        return (
-          <TextField
+          )
+        }} />
+      ),
+      [FormBasicField.DateTime]: (props) => (
+        <WithForm key={props.key} render={form => {
+          const { label, helperText } = FormFactory.getCommonFieldProps(props, form)
+          return (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <FormControl fullWidth error={!!helperText}>
+                <DateTimePicker
+                  label={label}
+                  {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+                  onChange={(date) => form.setValue(props.name, date)}  // Manually set the value for the DateTime
+                />
+                {!!helperText && (
+                  <FormHelperText>{helperText}</FormHelperText>
+                )}
+              </FormControl>
+            </LocalizationProvider>
+          )
+        }} />
+      ),
+      [FormBasicField.Enum]: (props) => (
+        <WithForm key={props.key} render={form => {
+          return (
+            <TextField
+              {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+              {...FormFactory.getCommonFieldProps(props, form)}
+              select
+            >
+              {(props.options || []).map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          )
+        }} />
+      ),
+      [FormBasicField.Color]: ({ key, ...props }) => <ColorFormInput key={key} {...props} />,
+      [FormBasicField.File]: (props) => (
+        <WithForm key={props.key} render={form =>
+          <FileFormInput
             {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
             {...FormFactory.getCommonFieldProps(props, form)}
-            select
-          >
-            {(props.options || []).map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-        )
-      }} />,
-      [FormBasicField.Color]: (props) => <ColorFormInput {...props} />,
-      [FormBasicField.File]: (props) => <WithForm key={props.key} render={form =>
-        <FileFormInput
-          {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
-          {...FormFactory.getCommonFieldProps(props, form)}
-        />
-      } />,
+          />
+        } />
+      ),
     }
   }
 
@@ -172,7 +184,7 @@ class FormFactory {
   }
 
   static getCommonFieldProps = (props: FormFieldHandlerProps, form: UseFormReturn) => {
-    const { name, isRequired, label, ...rest } = props
+    const { name, isRequired, label, key, ...rest } = props
     const result = {
       label,
       helperText: form.formState.errors[name]?.message?.toString(),

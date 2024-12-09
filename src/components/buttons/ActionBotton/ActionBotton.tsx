@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useState } from "react"
-import { Button, Confirm, ConfirmProps } from "react-admin"
+import { Button, Confirm, ConfirmProps, useRefresh } from "react-admin"
 
 export type ActionButtonProps = {
   onConfirm: (() => any) | undefined
@@ -18,16 +18,19 @@ const ActionButton = ({
 }: ActionButtonProps) => {
   const show = typeof isShow === "function" ? isShow() : isShow
   const [confirming, setConfirming] = useState(false)
+  const refresh = useRefresh()
 
   const handleCancel = useCallback(() => setConfirming(false), [setConfirming])
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useCallback(async () => {
     if (!onConfirm) {
       return
     }
-    onConfirm()
+    const result = await onConfirm()
     setConfirming(false)
-  }, [onConfirm, setConfirming])
+    refresh()
+    return result
+  }, [onConfirm, setConfirming, refresh])
 
   const clickHandler = useCallback(() => {
     if (confirmProps != null) {
