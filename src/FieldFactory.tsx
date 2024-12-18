@@ -1,22 +1,24 @@
-import { ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import {
+  AutocompleteArrayInput,
+  AutocompleteInput,
   BooleanInput, DateField,
   DateTimeInput, ImageField, NumberInput,
   ReferenceArrayField,
+  ReferenceArrayInput,
   ReferenceField,
   ReferenceInput,
   SelectInput, TextField,
   TextInput,
   required
 } from 'react-admin'
-import OTFUpload from './components/inputs/OTFUpload'
-import ColorInput from './components/inputs/ColorInput'
+import { Required } from './common'
 import ColorField from './components/fields/ColorField'
 import JsonField from './components/fields/JsonField'
+import ColorInput from './components/inputs/ColorInput'
 import JsonInput from './components/inputs/JsonInput'
+import OTFUpload from './components/inputs/OTFUpload'
 import { Awaitable } from './utils'
-import React from 'react'
-import { Required } from './common'
 
 type FieldProps = { source: string } & Record<string, any>
 
@@ -84,9 +86,20 @@ class FieldFactory {
       <SelectInput {...props} choices={options.map((id: string) => ({ id, name: id }))} />,
     [BasicField.Color]: (props: FieldProps) => <ColorInput {...props} />,
     [BasicField.Json]: (props: FieldProps) => <JsonInput {...props} />,
-    [BasicField.Reference]: ({ reference, ...props }: FieldProps) => reference
-      ? <ReferenceInput {...props} reference={reference} />
-      : <div>No "reference" specified</div>
+    [BasicField.Reference]: ({ reference, validate, children, ...props }: FieldProps) => {
+      if (!reference) { return <div>No "reference" specified</div> }
+      const newChildren = !!validate
+        ? React.cloneElement(children ?? <AutocompleteInput />, { validate })
+        : children
+      return <ReferenceInput {...props} children={newChildren} reference={reference} />
+    },
+    [BasicField.ReferenceArray]: ({ reference, validate, children, ...props }: FieldProps) => {
+      if (!reference) { return <div>No "reference" specified</div> }
+      const newChildren = !!validate
+        ? React.cloneElement(children ?? <AutocompleteArrayInput />, { validate })
+        : children
+      return <ReferenceArrayInput {...props} children={newChildren} reference={reference} />
+    },
   }
 
   FILTERS = {

@@ -39,7 +39,7 @@ const RESOURCES: ResourceGenerateOption[] = [{
   name: 'posts',
   fields: {
     id: 'Serial!',
-    userId: { componentType: 'Reference', reference: 'users' },
+    userId: { componentType: 'Reference!', reference: 'users' },
     title: 'Text',
     body: { componentType: 'Text', multiline: true },
   },
