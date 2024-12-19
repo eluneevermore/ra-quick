@@ -1,4 +1,3 @@
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CircularProgress from '@mui/material/CircularProgress'
 import { ChangeEvent, createContext, useCallback, useContext, useRef, useState } from 'react'
 import { Button, InputProps, TextInput, useInput, useNotify } from 'react-admin'
@@ -28,38 +27,45 @@ const defaultGetReadUrl = (url: string) => {
 export type OTFUploadProps<ValueType = any> = InputProps<ValueType> & {
   contentType?: string,
   getUploadUrl?: () => Awaitable<string>,
-  getReadUrl?: (url: string) => string,
+  getReadUrl?: (url: string) => Awaitable<string>,
 }
 
-export const OTFUploadContext = createContext<{ getUploadUrl: undefined | (() => Awaitable<string>) }>({
-  getUploadUrl: undefined,
-})
+export const OTFUploadContext = createContext<{
+  getUploadUrl?: () => Awaitable<string>,
+  getReadUrl?: (url: string) => Awaitable<string>,
+}>({})
 
 export const OTFUpload = (props: OTFUploadProps) => {
   const {
     contentType,
     getUploadUrl: getUploadUrlProp,
-    getReadUrl = defaultGetReadUrl,
+    getReadUrl: getReadUrlProp,
   } = props
   const { field } = useInput(props)
   const [processing, setProcessing] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
   const showNotification = useNotify()
-  const { getUploadUrl: getUploadUrlContext } = useContext(OTFUploadContext)
-  const getUploadUrl = getUploadUrlProp ?? getUploadUrlContext
+  const uploadContext = useContext(OTFUploadContext)
+  const getUploadUrl = getUploadUrlProp ?? uploadContext.getUploadUrl
+  const getReadUrl = getReadUrlProp ?? uploadContext.getReadUrl ?? defaultGetReadUrl
 
-  const uploadFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const uploadFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     if (processing) { return }
     if (!getUploadUrl) { return }
     const file = event.target.files?.[0]
     if (!file) { return }
 
     setProcessing(true)
-    otfUpload(file, getUploadUrl, contentType)
-      .then(uploadUrl => field.onChange(getReadUrl(uploadUrl)))
-      .catch((error: Error) => showNotification(error.message, { type: 'error' }))
-      .finally(() => setProcessing(false))
-  }, [processing, setProcessing, getUploadUrl, contentType, field])
+    try {
+      const uploadUrl = await otfUpload(file, getUploadUrl, contentType)
+      const readUrl = await getReadUrl(uploadUrl)
+      field.onChange(readUrl)
+    } catch (error: any) {
+      showNotification(error?.message, { type: 'error' })
+    } finally {
+      setProcessing(false)
+    }
+  }, [processing, setProcessing, getUploadUrl, getReadUrl, contentType, field])
 
   const selectFile = () => {
     if (processing) { return }
@@ -79,9 +85,7 @@ export const OTFUpload = (props: OTFUploadProps) => {
       {processing
         ? <CircularProgress />
         : (
-          <Button onClick={selectFile} label='Upload' disabled={processing}>
-            <CloudUploadIcon></CloudUploadIcon>
-          </Button>
+          <Button onClick={selectFile} label='Upload' disabled={processing} />
         )
       }
       <input type='file' ref={ref} onChange={uploadFile} hidden />
