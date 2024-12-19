@@ -6,7 +6,7 @@ import { useOnOutsideClick } from '../hooks/event'
 
 export type ColorFormInputProps = { name: string, isRequired?: boolean } & Omit<TextFieldProps, 'name'>
 
-const ColorFormInput = ({ name, isRequired, ...props }: ColorFormInputProps) => {
+export const ColorFormInput = ({ name, isRequired, ...props }: ColorFormInputProps) => {
   const { setValue, watch, formState, register } = useFormContext()
   const helperText = formState.errors[name]?.message?.toString()
   const [show, setShow] = useState(false)

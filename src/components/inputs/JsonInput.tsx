@@ -1,16 +1,16 @@
-import { useEffect, useRef } from 'react'
 import Ajv from 'ajv'
 import JSONEditor, { JSONEditorOptions } from 'jsoneditor'
+import { useEffect, useRef } from 'react'
 import { InputProps, useInput } from 'react-admin'
 
 const ajv = new Ajv()
 
-type JsonInputProps<ValueType = any> = InputProps<ValueType> & {
+export type JsonInputProps<ValueType = any> = InputProps<ValueType> & {
   className?: string,
   options?: JSONEditorOptions,
 }
 
-const JsonInput = ((props: JsonInputProps) => {
+export const JsonInput = ((props: JsonInputProps) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<JSONEditor>()
 

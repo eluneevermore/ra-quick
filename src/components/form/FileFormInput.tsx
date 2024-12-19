@@ -7,7 +7,7 @@ export type FileFormInputProps = {
   label?: string,
 } & Omit<UseFormRegisterReturn, 'name'>
 
-const FileFormInput = ({ name, helperText, label, ...props }: FileFormInputProps) => {
+export const FileFormInput = ({ name, helperText, label, ...props }: FileFormInputProps) => {
   const { watch, setValue } = useFormContext()
   const selectedFile = watch(name)
 

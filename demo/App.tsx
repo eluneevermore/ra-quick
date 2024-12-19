@@ -1,7 +1,7 @@
 import jsonServerProvider from 'ra-data-json-server'
 import React from 'react'
 import { Admin } from 'react-admin'
-import factory, { ResourceGenerateOption } from '../src'
+import factory, { OTFUploadContext, ResourceGenerateOption } from '../src'
 import { authProvider } from './authProvider'
 
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com')
@@ -46,16 +46,24 @@ const RESOURCES: ResourceGenerateOption[] = [{
   filters: {
     id: 'Number',
   },
+}, {
+  name: 'photos',
+  fields: {
+    id: 'Serial!',
+    url: 'Image!',
+  },
 }]
 
 const App = () => {
   return (
-    <Admin
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-    >
-      {factory.generateResourceList(RESOURCES)}
-    </Admin>
+    <OTFUploadContext.Provider value={{ getUploadUrl: () => Promise.resolve('https://test') }}>
+      <Admin
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+      >
+        {factory.generateResourceList(RESOURCES)}
+      </Admin>
+    </OTFUploadContext.Provider>
   )
 }
 

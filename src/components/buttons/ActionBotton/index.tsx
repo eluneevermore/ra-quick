@@ -1,8 +1,5 @@
 import ActionButton from './ActionBotton'
-import FormActionButton from './FormActionButton'
-
-export {
-  FormActionButton,
-}
+export * from './ActionBotton'
+export * from './FormActionButton'
 
 export default ActionButton

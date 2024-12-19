@@ -9,7 +9,7 @@ export type ActionButtonProps = {
   icon?: ReactElement<any>
 }
 
-const ActionButton = ({
+export const ActionButton = ({
   onConfirm,
   confirmProps = null,
   isShow = true,

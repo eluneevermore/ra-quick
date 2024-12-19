@@ -1,7 +1,7 @@
-import { ChangeEvent, useCallback, useRef, useState } from 'react'
-import { useInput, useNotify, TextInput, InputProps, Button } from 'react-admin'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import CircularProgress from '@mui/material/CircularProgress'
+import { ChangeEvent, createContext, useCallback, useContext, useRef, useState } from 'react'
+import { Button, InputProps, TextInput, useInput, useNotify } from 'react-admin'
 import { Awaitable } from '../../utils'
 
 const otfUpload = async (
@@ -27,23 +27,30 @@ const defaultGetReadUrl = (url: string) => {
 
 export type OTFUploadProps<ValueType = any> = InputProps<ValueType> & {
   contentType?: string,
-  getUploadUrl: () => Awaitable<string>,
+  getUploadUrl?: () => Awaitable<string>,
   getReadUrl?: (url: string) => string,
 }
 
-const OTFUpload = (props: OTFUploadProps) => {
+export const OTFUploadContext = createContext<{ getUploadUrl: undefined | (() => Awaitable<string>) }>({
+  getUploadUrl: undefined,
+})
+
+export const OTFUpload = (props: OTFUploadProps) => {
   const {
     contentType,
-    getUploadUrl,
+    getUploadUrl: getUploadUrlProp,
     getReadUrl = defaultGetReadUrl,
-   } = props
+  } = props
   const { field } = useInput(props)
   const [processing, setProcessing] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
   const showNotification = useNotify()
+  const { getUploadUrl: getUploadUrlContext } = useContext(OTFUploadContext)
+  const getUploadUrl = getUploadUrlProp ?? getUploadUrlContext
 
   const uploadFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (processing) { return }
+    if (!getUploadUrl) { return }
     const file = event.target.files?.[0]
     if (!file) { return }
 
@@ -60,6 +67,10 @@ const OTFUpload = (props: OTFUploadProps) => {
       ref.current.value = ''
       ref.current.click()
     }
+  }
+
+  if (!getUploadUrl) {
+    return <div>No "getUploadUrl" specified</div>
   }
 
   return (

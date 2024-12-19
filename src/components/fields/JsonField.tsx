@@ -9,7 +9,7 @@ export type JsonFieldProps<ValueType = any> = InputProps<ValueType> & {
   options?: JSONEditorOptions,
 }
 
-const JsonField = (props: JsonFieldProps) => {
+export const JsonField = (props: JsonFieldProps) => {
   const record = useRecordContext(props)
   const { className, source, options = {} } = props
 

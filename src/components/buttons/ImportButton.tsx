@@ -1,7 +1,7 @@
-import React, { ChangeEventHandler, ReactElement, useRef } from 'react'
-import { Button } from 'react-admin'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import Tooltip from '@mui/material/Tooltip'
+import React, { ChangeEventHandler, ReactElement, useRef } from 'react'
+import { Button } from 'react-admin'
 
 export const ImportButton = (props: ImportButtonProps) => {
   const {
@@ -44,7 +44,7 @@ export const ImportButton = (props: ImportButtonProps) => {
   )
 }
 
-type ImportButtonProps = {
+export type ImportButtonProps = {
   label?: string,
   reset?: boolean,
   onSelect?: (file: File, event: React.ChangeEvent<HTMLInputElement>) => void,

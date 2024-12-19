@@ -6,13 +6,13 @@ import ActionButton, { ActionButtonProps } from './ActionBotton'
 
 type ConfirmHandler<R = any> = (values: Record<keyof FormProperty, any>, id?: any) => R
 
-export type ListActionButtonProps = Omit<ActionButtonProps, 'onConfirm'> & {
+export type FormActionButtonProps = Omit<ActionButtonProps, 'onConfirm'> & {
   resource: string,
   form?: ReactElement<{ onSubmit: ConfirmHandler }>,
   onConfirm?: ConfirmHandler,
 }
 
-const FormActionButton = ({ form, onConfirm, confirmProps, ...props }: ListActionButtonProps) => {
+export const FormActionButton = ({ form, onConfirm, confirmProps, ...props }: FormActionButtonProps) => {
   const [showForm, setShowForm] = useState(false)
   const hasForm = !!form
   const record = useRecordContext()

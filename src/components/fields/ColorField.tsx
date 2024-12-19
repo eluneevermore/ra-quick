@@ -1,6 +1,6 @@
 import { InputProps, TextField, useRecordContext } from 'react-admin'
 
-const ColorField = (props: InputProps) => {
+export const ColorField = (props: InputProps) => {
   const { source } = props
   const record = useRecordContext(props)
   const value = record[source]

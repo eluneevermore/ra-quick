@@ -18,7 +18,6 @@ import JsonField from './components/fields/JsonField'
 import ColorInput from './components/inputs/ColorInput'
 import JsonInput from './components/inputs/JsonInput'
 import OTFUpload from './components/inputs/OTFUpload'
-import { Awaitable } from './utils'
 
 type FieldProps = { source: string } & Record<string, any>
 
@@ -75,13 +74,7 @@ class FieldFactory {
     [BasicField.Number]: (props: FieldProps) => <NumberInput {...props} />,
     [BasicField.Bool]: (props: FieldProps) => <BooleanInput {...props} />,
     [BasicField.DateTime]: (props: FieldProps) => <DateTimeInput {...props} />,
-    [BasicField.Image]: ({ getUploadUrl, ...props }: FieldProps) => typeof getUploadUrl === 'function'
-      ? <OTFUpload
-        parse={value => value}
-        getUploadUrl={getUploadUrl as () => Awaitable<string>}
-        {...props}
-      />
-      : <div>No "getUploadUrl" specified</div>,
+    [BasicField.Image]: (props: FieldProps) => <OTFUpload parse={value => value} {...props} />,
     [BasicField.Enum]: ({ options = [], ...props }: FieldProps) =>
       <SelectInput {...props} choices={options.map((id: string) => ({ id, name: id }))} />,
     [BasicField.Color]: (props: FieldProps) => <ColorInput {...props} />,

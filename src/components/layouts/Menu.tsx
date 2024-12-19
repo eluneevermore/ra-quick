@@ -1,10 +1,10 @@
-import { DashboardMenuItem, Menu, MenuProps, ResourceMenuItem, useResourceDefinitions, useSidebarState } from 'react-admin'
-import { styled } from '@mui/material'
-import MuiAccordion from '@mui/material/Accordion'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import MuiAccordionSummary from '@mui/material/AccordionSummary'
+import { styled } from '@mui/material'
 import type { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordion from '@mui/material/Accordion'
 import type { AccordionSummaryProps } from '@mui/material/AccordionSummary'
+import MuiAccordionSummary from '@mui/material/AccordionSummary'
+import { DashboardMenuItem, Menu, MenuProps, ResourceMenuItem, useResourceDefinitions, useSidebarState } from 'react-admin'
 import { groupBy } from '../../utils'
 
 const Accordion = styled((props: AccordionProps) => (
@@ -54,7 +54,7 @@ const getDefaultChildren = ({ hasDashboard }: { hasDashboard: boolean | undefine
   ]
 }
 
-const AppMenu = (props: MenuProps) => {
+export const AppMenu = (props: MenuProps) => {
   const {
     hasDashboard,
     children = getDefaultChildren({ hasDashboard }),

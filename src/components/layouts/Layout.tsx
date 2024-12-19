@@ -1,7 +1,7 @@
 import { Layout, LayoutProps } from 'react-admin'
 import Menu from './Menu'
 
-const AppLayout = (props: LayoutProps) => <Layout
+export const AppLayout = (props: LayoutProps) => <Layout
   {...props}
   menu={Menu}
 />

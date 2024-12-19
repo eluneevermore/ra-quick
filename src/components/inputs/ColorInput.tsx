@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
-import { TextInput, InputProps, useInput } from 'react-admin'
+import { InputProps, TextInput, useInput } from 'react-admin'
 import { ChromePicker } from 'react-color'
 import { useOnOutsideClick } from '../hooks/event'
 
 export type ColorInputProps<ValueType = any> = InputProps<ValueType>
 
-const ColorInput = (props: ColorInputProps) => {
+export const ColorInput = (props: ColorInputProps) => {
   const [show, setShow] = useState(false)
 
   const ref = useRef<HTMLDivElement>(null)
