@@ -55,7 +55,8 @@ class FormFactory {
       [FormBasicField.Number]: (props) => (
         <WithForm key={props.key} render={form =>
           <TextField type='number'
-            {...form.register(props.name, FormFactory.getCommonRegisterProps(props, form))}
+            inputProps={{ step: 'any' }}
+            {...form.register(props.name, { ...FormFactory.getCommonRegisterProps(props, form), valueAsNumber: true })}
             {...FormFactory.getCommonFieldProps(props, form)}
           />}
         />
