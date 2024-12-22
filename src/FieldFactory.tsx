@@ -97,6 +97,7 @@ class FieldFactory {
 
   FILTERS = {
     ...this.INPUTS,
+    [BasicField.Serial]: (props: FieldProps) => <NumberInput {...props} />,
   }
 
   CREATE_INPUTS = this.INPUTS

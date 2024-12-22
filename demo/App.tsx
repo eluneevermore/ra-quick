@@ -13,6 +13,9 @@ const RESOURCES: ResourceGenerateOption[] = [{
     name: 'Text',
     email: 'Text',
   },
+  filters: {
+    id: 'Serial!',
+  },
   listActions: [{
     name: 'ban',
     form: {
